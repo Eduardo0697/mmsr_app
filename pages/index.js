@@ -16,11 +16,11 @@ export default function Home({allSongs}) {
       </Head>
       <main className={styles.main}>
         <div className="container mx-auto">
-          <h1 className="text-3xl font-bold">
-            Search recommendations based on a selected song
+          <h1 className="text-3xl font-bold mb-3">
+            MMSR Project Team B
           </h1>
           <SearchBar></SearchBar>
-          <Alert color="info">Alert!</Alert>
+         
          
         </div>
       </main>
