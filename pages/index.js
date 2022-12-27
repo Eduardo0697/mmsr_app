@@ -1,11 +1,31 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
 import styles from '../styles/Home.module.css'
 import { Alert } from "flowbite-react";
 import SearchBar from '../components/SearchBar';
+import { useState, useEffect } from 'react';
 
-export default function Home({allSongs}) {
+
+export default function Home() {
+
+  const [search, setSearch] = useState('');
+
+  const sendQuery = (query) => {
+    console.log("Fetch API", query) // Send to fastapi
+  }
+
+  const handleSearchonClick = () => {
+      sendQuery(search);
+  }
+
+  const handleQueryOnChange = (queryValue) => {
+      setSearch(queryValue)
+  }
+
+  const handleQueryOnEnter = (queryValue, selectedItem) => {
+      // console.log("Query enter", selectedItem.text)
+      sendQuery(selectedItem.text);
+  }
+
   return (
     <>
       <Head>
@@ -19,7 +39,11 @@ export default function Home({allSongs}) {
           <h1 className="text-3xl font-bold mb-3">
             MMSR Project Team B
           </h1>
-          <SearchBar></SearchBar>
+          <SearchBar 
+            handleSearchonClick={handleSearchonClick} 
+            handleQueryOnChange={handleQueryOnChange} 
+            handleQueryOnEnter={handleQueryOnEnter}>
+          </SearchBar>
          
          
         </div>
