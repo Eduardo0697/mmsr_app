@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Turnstone from 'turnstone'
 
 const styles = {
@@ -15,9 +15,10 @@ const styles = {
 
 const maxItems = 15
 
-export default function SearchBar({handleSearchonClick, handleQueryOnChange, handleQueryOnEnter}){
+export default function SearchBar({handleSearchonClick, handleQueryOnChange, handleQueryOnEnter, trigger}){
 
     const [songs, setSongs] = useState({});
+    const turnstoneRef = useRef()
 
     useEffect(() => {
        fetch('/api/songs')
@@ -33,10 +34,17 @@ export default function SearchBar({handleSearchonClick, handleQueryOnChange, han
         });
     }, []);
 
+    useEffect(() => {
+        if(trigger>0){
+            turnstoneRef.current?.clear()
+        }
+    }, [trigger])
+
     return(
-        <div className="flex flex-row">
-            <div className="basis-4/5">
+        <div className="flex flex-row basis-3/4">
+            <div className="grow">
                 <Turnstone
+                    ref={turnstoneRef}
                     id="autocomplete"
                     listbox={songs} 
                     styles={styles}  
@@ -51,8 +59,8 @@ export default function SearchBar({handleSearchonClick, handleQueryOnChange, han
                     maxItems={maxItems}
                 />
             </div>
-            <div className="basis-1/5">
-                <button onClick={handleSearchonClick}  type="button" className="h-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-r-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <div className="">
+                <button onClick={handleSearchonClick}  type="button" className="h-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-r-lg text-sm p-2.5 text-center inline-flex items-center  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     <svg className="ml-2 w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
