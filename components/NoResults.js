@@ -12,7 +12,7 @@ export default function NoResults({initial}){
                 <div className="text-center font-light py-4 ">
                     { initial ?
                         <span className="text-4xl leading-relaxed text-gray-500 dark:text-white">
-                            Give us a song or artist and you will get a list of similar songs that you'll love
+                            Give us a song or artist and you will get a list of similar songs that you&apos;ll love
                         </span>
                     :
                         <>
