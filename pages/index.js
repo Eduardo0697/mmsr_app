@@ -84,7 +84,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
      
-      <main className="flex flex-col justify-between items-center px-10 py-28 md:p-24 min-h-screen">
+      <main className="flex flex-col justify-between items-center px-5 py-32 md:p-28 min-h-screen">
         <NavBar handleHomeOnClick={handleHomeOnClick}>
             <SearchBar
               trigger={clearSearchbox}
@@ -101,7 +101,7 @@ export default function Home() {
             querySuccesful ? 
               <div className="flex flex-row flex-wrap">
                 { songToPlay.song !== "" && 
-                  <div className="grow basis-full md:basis-2/3 pr-5 mb-7">
+                  <div className="grow basis-full md:basis-2/3 pr-0 md:pr-5 mb-7">
                     <VideoPlayer songToPlay={songToPlay} ></VideoPlayer>  
                     <span className="relative font-medium pt-5 text-xl">{songToPlay.name}</span>
                   </div>

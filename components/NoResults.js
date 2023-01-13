@@ -11,7 +11,9 @@ export default function NoResults({initial}){
             <div className="flex justify-center ">
                 <div className="text-center font-light py-4 ">
                     { initial ?
-                        <span className="text-4xl leading-relaxed text-gray-500 dark:text-white">Search a song and you will get the recommendation of 10 similar songs</span>
+                        <span className="text-4xl leading-relaxed text-gray-500 dark:text-white">
+                            Give us a song or artist and you will get a list of similar songs that you'll love
+                        </span>
                     :
                         <>
                             <span className="text-4xl leading-relaxed text-gray-500 dark:text-white">No results found </span>
