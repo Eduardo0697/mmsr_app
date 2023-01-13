@@ -5,6 +5,7 @@ import ResultList from '../components/ResultList';
 import NoResults from '../components/NoResults';
 import NavBar from '../components/NavBar';
 import FooterContainer from '../components/FooterSection';
+import PlaceholderList from '../components/placeholderList';
 import { useState, useEffect, useRef } from 'react';
 
 
@@ -15,7 +16,8 @@ export default function Home() {
   const [songToPlay, setSongToPlay] = useState({ "song" : "", "name" : ""});
   const [results, setResults] = useState([]);
   const [stateZero, setStateZero] = useState(true);
-  const [clearSearchbox, setClearSearchbox] = useState(0)
+  const [clearSearchbox, setClearSearchbox] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const extractVideoIdFromUrl = (url) => {
     const extractVideoId2 = /\=(.*)/;
@@ -36,9 +38,18 @@ export default function Home() {
               "genres": el.genres
             }
           })
-          // console.log('Song Info recovered', results);
-          setquerySuccesful(true)
+          // Only to test a slow request
+          // setTimeout(()=> {
+          //   setLoading(false)
+          //   setResults(results)
+          //   setquerySuccesful(true)
+          // },3000);
+
+          setLoading(false)
           setResults(results)
+          setquerySuccesful(true)
+        
+          
 
       });
   }
@@ -61,6 +72,7 @@ export default function Home() {
         setSongToPlay({ "song" : "", "name" : ""})
         setquerySuccesful(false)
       }else{
+        setLoading(true);
         setSongToPlay({ "song" : "", "name" : ""})
         sendQuery(search);
       }
@@ -97,29 +109,31 @@ export default function Home() {
     
         <div className="container mx-auto content">
 
-          {
-            querySuccesful ? 
-              <div className="flex flex-row flex-wrap">
-                { songToPlay.song !== "" && 
-                  <div className="grow basis-full md:basis-2/3 pr-0 md:pr-5 mb-7">
-                    <VideoPlayer songToPlay={songToPlay} ></VideoPlayer>  
-                    <span className="relative font-medium pt-5 text-xl">{songToPlay.name}</span>
-                  </div>
-                }
-              
-                { results.length !== 0 && 
-                  <div className={`grow ${songToPlay.song !== "" ? 'basis-full md:basis-1/3' : 'basis-full'}`}>
+        { loading && <PlaceholderList />}
+        { !querySuccesful && !loading  && <NoResults initial={stateZero} />}
+        { querySuccesful && !loading &&
+          <div className="flex flex-row flex-wrap">
+              { songToPlay.song !== "" && 
+                <div className="grow basis-full md:basis-2/3 pr-0 md:pr-5 mb-7">
+                  <VideoPlayer songToPlay={songToPlay} ></VideoPlayer>  
+                  <span className="relative font-medium pt-5 text-xl">{songToPlay.name}</span>
+                </div>
+              }
+            
+              { results.length !== 0 && 
+                <div className={`grow ${songToPlay.song !== "" ? 'basis-full md:basis-1/3' : 'basis-full'}`}>
 
-                    <ResultList results={results} handleOnClick={handleSelectedSongPlay} selectedSong={songToPlay.song}/>
+                  <ResultList results={results} handleOnClick={handleSelectedSongPlay} selectedSong={songToPlay.song}/>
 
-                  </div>
-                }
+                </div>
+              }
 
-            </div>
-            :
-            <NoResults initial={stateZero} />
-              
-          }
+          </div>
+        
+          
+        
+            
+        }
          
         </div>
         
