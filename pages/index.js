@@ -22,19 +22,21 @@ export default function Home() {
     return url.match(extractVideoId2)[1]
   }
   const sendQuery = (query) => {
-    console.log("Fetch API", query) // Send to fastapi
-    fetch('/api/video/10')
+    // console.log("Fetch API", query) 
+    fetch('/api/video/10') // Send to fastapi
       .then((response) => response.json())
       .then((songsInfo) => {
-        console.log("Recovering")
+        // console.log("Recovering")
           
           const results = songsInfo.map( el => { 
             return {
               "id" : el.id, 
               "idVideo" : extractVideoIdFromUrl(el.url),
+              "name": el.name,
+              "genres": el.genres
             }
           })
-          console.log('Song Info recovered', results);
+          // console.log('Song Info recovered', results);
           setquerySuccesful(true)
           setResults(results)
 
@@ -82,34 +84,31 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
      
-      <main className="flex flex-col justify-between items-center px-10 md:p-24 min-h-screen">
-        <NavBar handleHomeOnClick={handleHomeOnClick}></NavBar>
-    
-        <div className="container mx-auto content">
-          <div className="flex justify-center">
+      <main className="flex flex-col justify-between items-center px-10 py-28 md:p-24 min-h-screen">
+        <NavBar handleHomeOnClick={handleHomeOnClick}>
             <SearchBar
               trigger={clearSearchbox}
               handleSearchonClick={handleSearchonClick} 
               handleQueryOnChange={handleQueryOnChange} 
               handleQueryOnEnter={handleQueryOnEnter}>
+                
             </SearchBar>
-          </div>
-         
-          
-          <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+        </NavBar>
+    
+        <div className="container mx-auto content">
 
           {
             querySuccesful ? 
               <div className="flex flex-row flex-wrap">
                 { songToPlay.song !== "" && 
-                  <div className=" basis-full md:basis-2/3 pr-5 mb-7">
-                    <VideoPlayer songToPlay={songToPlay.song} ></VideoPlayer>  
-                    <span className="absolute font-medium pt-5 text-xl">{songToPlay.name}</span>
+                  <div className="grow basis-full md:basis-2/3 pr-5 mb-7">
+                    <VideoPlayer songToPlay={songToPlay} ></VideoPlayer>  
+                    <span className="relative font-medium pt-5 text-xl">{songToPlay.name}</span>
                   </div>
                 }
               
                 { results.length !== 0 && 
-                  <div className={`${songToPlay.song !== "" ? 'basis-full md:basis-1/3' : 'basis-full'}`}>
+                  <div className={`grow ${songToPlay.song !== "" ? 'basis-full md:basis-1/3' : 'basis-full'}`}>
 
                     <ResultList results={results} handleOnClick={handleSelectedSongPlay} selectedSong={songToPlay.song}/>
 

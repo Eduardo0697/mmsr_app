@@ -22,7 +22,7 @@ export default function VideoPlayer({songToPlay}) {
     return(
         
         <div className={styles.videoContainer}>
-            <YouTube videoId={songToPlay}  opts={opts} onReady={_onReady}/>  
+            <YouTube videoId={songToPlay.song}  opts={opts} onReady={_onReady}/>
         </div>
     )
 }

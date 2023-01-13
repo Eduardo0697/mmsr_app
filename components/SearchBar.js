@@ -41,7 +41,7 @@ export default function SearchBar({handleSearchonClick, handleQueryOnChange, han
     }, [trigger])
 
     return(
-        <div className="flex flex-row basis-3/4">
+        <div className="flex flex-row basis-full md:basis-3/5">
             <div className="grow">
                 <Turnstone
                     ref={turnstoneRef}

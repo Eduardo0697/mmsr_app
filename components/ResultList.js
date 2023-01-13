@@ -4,13 +4,13 @@ export default function ResultList({results, handleOnClick, selectedSong}) {
 
     return(
         <>
-            <p className="font-medium mt-10 md:mt-0 mb-5">Recommendations</p>
+            <p className="font-medium mt-5 md:mt-0 mb-5">Recommendations</p>
 
             <div className="divide-y divide-gray-200 dark:divide-gray-700 text-sm font-medium text-gray-900 bg-white  rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                     {results.map( ( result, idx) =>
                     
                         <div
-                            onClick={() => handleOnClick(result.idVideo, result.id )}
+                            onClick={() => handleOnClick(result.idVideo, result.name )}
                             id={result.idVideo}
                             key={result.id} 
                             type="button" 
@@ -21,10 +21,13 @@ export default function ResultList({results, handleOnClick, selectedSong}) {
                             </div>
                             <div className="flex-1">
                                 <div className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                Artist {result.idVideo}
+                                {result.name}
                                 </div>
-                                <div className="text-sm text-gray-500 truncate dark:text-gray-400">
+                                {/* <div className="text-sm text-gray-500 truncate dark:text-gray-400">
                                 Song {result.idVideo}
+                                </div> */}
+                                <div className="text-sm text-gray-500 truncate dark:text-gray-400">
+                                {result.genres}
                                 </div>
                             </div>
                             <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">

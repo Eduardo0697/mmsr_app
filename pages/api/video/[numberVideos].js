@@ -12,7 +12,9 @@ const data = fileContent.split('\n').map( (row, index) => {
    
     return { 
        "id": info[0],
-       "url" : info[1]
+       "url" : info[1],
+       "name" : `Artist-Song ${info[0]} `,
+       "genres": "[pop, rock, jazz]"
      }
 })
 
