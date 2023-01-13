@@ -18,15 +18,15 @@ export default function Home() {
   const [clearSearchbox, setClearSearchbox] = useState(0)
 
   const extractVideoIdFromUrl = (url) => {
-    const extractVideoId = /(?<=\=)(.*)$/g;
-    const videoId =  extractVideoId.exec(url)["0"];
-    return videoId
+    const extractVideoId2 = /\=(.*)/;
+    return url.match(extractVideoId2)[1]
   }
   const sendQuery = (query) => {
     console.log("Fetch API", query) // Send to fastapi
     fetch('/api/video/10')
       .then((response) => response.json())
       .then((songsInfo) => {
+        console.log("Recovering")
           
           const results = songsInfo.map( el => { 
             return {
