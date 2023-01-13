@@ -1,20 +1,68 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
-import { Alert } from "flowbite-react";
 import SearchBar from '../components/SearchBar';
-import { useState, useEffect } from 'react';
+import VideoPlayer from '../components/VideoPlayer';
+import ResultList from '../components/ResultList';
+import NoResults from '../components/NoResults';
+import NavBar from '../components/NavBar';
+import FooterContainer from '../components/FooterSection';
+import { useState, useEffect, useRef } from 'react';
 
 
 export default function Home() {
 
   const [search, setSearch] = useState('');
+  const [querySuccesful, setquerySuccesful] = useState(false);
+  const [songToPlay, setSongToPlay] = useState("");
+  const [results, setResults] = useState([]);
+  const [stateZero, setStateZero] = useState(true);
+  const [clearSearchbox, setClearSearchbox] = useState(0)
 
+  const extractVideoIdFromUrl = (url) => {
+    const extractVideoId = /(?<=\=)(.*)$/g;
+    const videoId =  extractVideoId.exec(url)["0"];
+    return videoId
+  }
   const sendQuery = (query) => {
     console.log("Fetch API", query) // Send to fastapi
+    fetch('/api/video/10')
+      .then((response) => response.json())
+      .then((songsInfo) => {
+          
+          const results = songsInfo.map( el => { 
+            return {
+              "id" : el.id, 
+              "idVideo" : extractVideoIdFromUrl(el.url),
+            }
+          })
+          console.log('Song Info recovered', results);
+          setquerySuccesful(true)
+          setResults(results)
+
+      });
+  }
+
+  const handleHomeOnClick = () => {
+    setStateZero(true)
+    setResults([])
+    setquerySuccesful(false)
+    setSongToPlay("")
+    setSearch("")
+    setClearSearchbox(e => e+=1)
+  }
+  const handleSelectedSongPlay = (id) => {
+    setSongToPlay(id)
   }
 
   const handleSearchonClick = () => {
-      sendQuery(search);
+      setStateZero(false)
+      if(search===""){
+        setSongToPlay("")
+        setquerySuccesful(false)
+      }else{
+        setSongToPlay("")
+        sendQuery(search);
+      }
+      
   }
 
   const handleQueryOnChange = (queryValue) => {
@@ -22,7 +70,6 @@ export default function Home() {
   }
 
   const handleQueryOnEnter = (queryValue, selectedItem) => {
-      // console.log("Query enter", selectedItem.text)
       sendQuery(selectedItem.text);
   }
 
@@ -34,20 +81,51 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <div className="container mx-auto">
-          <h1 className="text-3xl font-bold mb-3">
-            MMSR Project Team B
-          </h1>
-          <SearchBar 
-            handleSearchonClick={handleSearchonClick} 
-            handleQueryOnChange={handleQueryOnChange} 
-            handleQueryOnEnter={handleQueryOnEnter}>
-          </SearchBar>
+     
+      <main className="flex flex-col justify-between items-center px-10 md:p-24 min-h-screen">
+        <NavBar handleHomeOnClick={handleHomeOnClick}></NavBar>
+    
+        <div className="container mx-auto content">
+          <div className="flex justify-center">
+            <SearchBar
+              trigger={clearSearchbox}
+              handleSearchonClick={handleSearchonClick} 
+              handleQueryOnChange={handleQueryOnChange} 
+              handleQueryOnEnter={handleQueryOnEnter}>
+            </SearchBar>
+          </div>
          
+          
+          <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+
+          {
+            querySuccesful ? 
+              <div className="flex flex-row flex-wrap">
+                { songToPlay !== "" && 
+                  <div className=" basis-full md:basis-2/3 pr-5">
+                    <VideoPlayer songToPlay={songToPlay} ></VideoPlayer>  
+                  </div>
+                }
+              
+                { results.length !== 0 && 
+                  <div className={`${songToPlay !== "" ? 'basis-full md:basis-1/3' : 'basis-full'}`}>
+
+                    <ResultList results={results} handleOnClick={handleSelectedSongPlay} selectedSong={songToPlay}/>
+
+                  </div>
+                }
+
+            </div>
+            :
+            <NoResults initial={stateZero} />
+              
+          }
          
         </div>
+        
       </main>
+      <FooterContainer />
+     
     </>
   )
 }
