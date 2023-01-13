@@ -12,7 +12,7 @@ export default function Home() {
 
   const [search, setSearch] = useState('');
   const [querySuccesful, setquerySuccesful] = useState(false);
-  const [songToPlay, setSongToPlay] = useState("");
+  const [songToPlay, setSongToPlay] = useState({ "song" : "", "name" : ""});
   const [results, setResults] = useState([]);
   const [stateZero, setStateZero] = useState(true);
   const [clearSearchbox, setClearSearchbox] = useState(0)
@@ -45,21 +45,21 @@ export default function Home() {
     setStateZero(true)
     setResults([])
     setquerySuccesful(false)
-    setSongToPlay("")
+    setSongToPlay({ "song" : "", "name" : ""})
     setSearch("")
     setClearSearchbox(e => e+=1)
   }
-  const handleSelectedSongPlay = (id) => {
-    setSongToPlay(id)
+  const handleSelectedSongPlay = (id, name) => {
+    setSongToPlay({ "song" : id, "name" : name})
   }
 
   const handleSearchonClick = () => {
       setStateZero(false)
       if(search===""){
-        setSongToPlay("")
+        setSongToPlay({ "song" : "", "name" : ""})
         setquerySuccesful(false)
       }else{
-        setSongToPlay("")
+        setSongToPlay({ "song" : "", "name" : ""})
         sendQuery(search);
       }
       
@@ -101,16 +101,17 @@ export default function Home() {
           {
             querySuccesful ? 
               <div className="flex flex-row flex-wrap">
-                { songToPlay !== "" && 
-                  <div className=" basis-full md:basis-2/3 pr-5">
-                    <VideoPlayer songToPlay={songToPlay} ></VideoPlayer>  
+                { songToPlay.song !== "" && 
+                  <div className=" basis-full md:basis-2/3 pr-5 mb-7">
+                    <VideoPlayer songToPlay={songToPlay.song} ></VideoPlayer>  
+                    <span className="absolute font-medium pt-5 text-xl">{songToPlay.name}</span>
                   </div>
                 }
               
                 { results.length !== 0 && 
-                  <div className={`${songToPlay !== "" ? 'basis-full md:basis-1/3' : 'basis-full'}`}>
+                  <div className={`${songToPlay.song !== "" ? 'basis-full md:basis-1/3' : 'basis-full'}`}>
 
-                    <ResultList results={results} handleOnClick={handleSelectedSongPlay} selectedSong={songToPlay}/>
+                    <ResultList results={results} handleOnClick={handleSelectedSongPlay} selectedSong={songToPlay.song}/>
 
                   </div>
                 }

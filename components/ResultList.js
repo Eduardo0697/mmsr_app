@@ -10,13 +10,15 @@ export default function ResultList({results, handleOnClick, selectedSong}) {
                     {results.map( ( result, idx) =>
                     
                         <div
-                            onClick={() => handleOnClick(result.idVideo)}
+                            onClick={() => handleOnClick(result.idVideo, result.id )}
                             id={result.idVideo}
                             key={result.id} 
                             type="button" 
                             className={` flex items-center space-x-4 justify-between w-full px-4 py-2 font-medium text-left  cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white`}>
                     
-
+                            <div>
+                                {idx + 1}
+                            </div>
                             <div className="flex-1">
                                 <div className="text-sm font-medium text-gray-900 truncate dark:text-white">
                                 Artist {result.idVideo}
