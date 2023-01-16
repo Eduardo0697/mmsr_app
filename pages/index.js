@@ -13,7 +13,7 @@ export default function Home() {
 
   const [search, setSearch] = useState('');
   const [querySuccesful, setquerySuccesful] = useState(false);
-  const [songToPlay, setSongToPlay] = useState({ "song" : "", "name" : ""});
+  const [songToPlay, setSongToPlay] = useState({ "song" : "", "name" : "", "id" : ""});
   const [results, setResults] = useState([]);
   const [stateZero, setStateZero] = useState(true);
   const [clearSearchbox, setClearSearchbox] = useState(0);
@@ -24,33 +24,43 @@ export default function Home() {
     return url.match(extractVideoId2)[1]
   }
   const sendQuery = (query) => {
-    // console.log("Fetch API", query) 
-    fetch('/api/video/10') // Send to fastapi
+    console.log("Fetch API", query.split("-"))
+    const queryArray =  query.split("-")
+    let artist = encodeURI(queryArray[0])
+    let song = encodeURI(queryArray[1])
+    console.log(artist, song)
+
+    fetch(`https://api-mmsr.herokuapp.com/query/?artist=${artist}&track=${song}&top=10&model=early_bert_blf_spectral_incp&simFunction=cosine`)
       .then((response) => response.json())
       .then((songsInfo) => {
-        // console.log("Recovering")
-          
-          const results = songsInfo.map( el => { 
+        // console.log("Recovering", songsInfo)
+
+        song = {
+          "id" : songsInfo.song[0].id, 
+          "idVideo" : extractVideoIdFromUrl(songsInfo.song[0].url),
+          "name": songsInfo.song[0].name,
+          "genres": songsInfo.song[0].genre,
+          "artist" : songsInfo.song[0].artist,
+          "song" : songsInfo.song[0].song,
+          "album": songsInfo.song[0].album_name
+        };
+  
+        const results = songsInfo.top.map( el => { 
             return {
               "id" : el.id, 
               "idVideo" : extractVideoIdFromUrl(el.url),
               "name": el.name,
-              "genres": el.genres
+              "genres": el.genre,
+              "artist" : el.artist,
+              "song" : el.song,
+              "album": el.album_name
             }
           })
-          // Only to test a slow request
-          // setTimeout(()=> {
-          //   setLoading(false)
-          //   setResults(results)
-          //   setquerySuccesful(true)
-          // },3000);
-
+   
           setLoading(false)
-          setResults(results)
+          setResults([song,...results])
           setquerySuccesful(true)
         
-          
-
       });
   }
 
@@ -58,22 +68,22 @@ export default function Home() {
     setStateZero(true)
     setResults([])
     setquerySuccesful(false)
-    setSongToPlay({ "song" : "", "name" : ""})
+    setSongToPlay({ "song" : "", "name" : "", "id" : ""})
     setSearch("")
     setClearSearchbox(e => e+=1)
   }
-  const handleSelectedSongPlay = (id, name) => {
-    setSongToPlay({ "song" : id, "name" : name})
+  const handleSelectedSongPlay = (id, name, idSong) => {
+    setSongToPlay({ "song" : id, "name" : name, "id" :idSong})
   }
 
   const handleSearchonClick = () => {
       setStateZero(false)
       if(search===""){
-        setSongToPlay({ "song" : "", "name" : ""})
+        setSongToPlay({ "song" : "", "name" : "", "id" : ""})
         setquerySuccesful(false)
       }else{
         setLoading(true);
-        setSongToPlay({ "song" : "", "name" : ""})
+        setSongToPlay({ "song" : "", "name" : "", "id" : ""})
         sendQuery(search);
       }
       
@@ -84,7 +94,15 @@ export default function Home() {
   }
 
   const handleQueryOnEnter = (queryValue, selectedItem) => {
-      sendQuery(selectedItem.text);
+      setStateZero(false)
+      if(search===""){
+        setSongToPlay({ "song" : "", "name" : "", "id" : ""})
+        setquerySuccesful(false)
+      }else{
+        setLoading(true);
+        setSongToPlay({ "song" : "", "name" : "", "id" : ""})
+        sendQuery(selectedItem.text);
+      }
   }
 
   return (
@@ -123,7 +141,7 @@ export default function Home() {
               { results.length !== 0 && 
                 <div className={`grow ${songToPlay.song !== "" ? 'basis-full md:basis-1/3' : 'basis-full'}`}>
 
-                  <ResultList results={results} handleOnClick={handleSelectedSongPlay} selectedSong={songToPlay.song}/>
+                  <ResultList results={results} handleOnClick={handleSelectedSongPlay} selectedSong={songToPlay.id}/>
 
                 </div>
               }
