@@ -15,6 +15,7 @@ export default function Home() {
   const [querySuccesful, setquerySuccesful] = useState(false);
   const [songToPlay, setSongToPlay] = useState({ "song" : "", "name" : "", "id" : ""});
   const [results, setResults] = useState([]);
+  const [metrics, setMetrics] = useState({});
   const [stateZero, setStateZero] = useState(true);
   const [clearSearchbox, setClearSearchbox] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -24,11 +25,11 @@ export default function Home() {
     return url.match(extractVideoId2)[1]
   }
   const sendQuery = (query) => {
-    console.log("Fetch API", query.split("-"))
+    // console.log("Fetch API", query.split("-"))
     const queryArray =  query.split("-")
     let artist = encodeURI(queryArray[0])
     let song = encodeURI(queryArray[1])
-    console.log(artist, song)
+    // console.log(artist, song)
 
     fetch(`https://api-mmsr.herokuapp.com/query/?artist=${artist}&track=${song}&top=10&model=model`)
       .then((response) => response.json())
@@ -57,8 +58,10 @@ export default function Home() {
             }
           })
    
-          setLoading(false)
+         
+          setMetrics(songsInfo.metrics)
           setResults([song,...results])
+          setLoading(false)
           setquerySuccesful(true)
         
       });
@@ -67,6 +70,7 @@ export default function Home() {
   const handleHomeOnClick = () => {
     setStateZero(true)
     setResults([])
+    setMetrics({})
     setquerySuccesful(false)
     setSongToPlay({ "song" : "", "name" : "", "id" : ""})
     setSearch("")
@@ -141,7 +145,7 @@ export default function Home() {
               { results.length !== 0 && 
                 <div className={`grow ${songToPlay.song !== "" ? 'basis-full md:basis-1/3' : 'basis-full'}`}>
 
-                  <ResultList results={results} handleOnClick={handleSelectedSongPlay} selectedSong={songToPlay.id}/>
+                  <ResultList metrics={metrics} results={results} handleOnClick={handleSelectedSongPlay} selectedSong={songToPlay.id}/>
 
                 </div>
               }
