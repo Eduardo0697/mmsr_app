@@ -30,7 +30,7 @@ export default function Home() {
     let song = encodeURI(queryArray[1])
     console.log(artist, song)
 
-    fetch(`https://api-mmsr.herokuapp.com/query/?artist=${artist}&track=${song}&top=10&model=early_bert_blf_spectral_incp&simFunction=cosine`)
+    fetch(`https://api-mmsr.herokuapp.com/query/?artist=${artist}&track=${song}&top=10&model=model`)
       .then((response) => response.json())
       .then((songsInfo) => {
         // console.log("Recovering", songsInfo)
