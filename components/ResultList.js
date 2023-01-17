@@ -16,10 +16,10 @@ export default function ResultList({results, handleOnClick, selectedSong, metric
                             className={` flex items-center space-x-4 justify-between w-full px-4 py-2 font-medium text-left  cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white`}>
                            
                             <div className="flex-1">
-                                <div className="text-sm font-bold text-gray-900 truncate dark:text-white">
+                                <div className="text-sm font-bold text-gray-900 truncate dark:text-white break-all whitespace-normal">
                                 {result.artist} - {result.song}
                                 </div>
-                                <div className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                <div className="text-sm font-medium text-gray-900 truncate dark:text-white break-all whitespace-normal">
                                 Album {result.album}
                                 </div>
                                 <div className="text-sm font-light text-gray-500 truncate dark:text-gray-400 break-all whitespace-normal ">
@@ -53,10 +53,10 @@ export default function ResultList({results, handleOnClick, selectedSong, metric
                                 {idx + 1}
                             </div>
                             <div className="flex-1">
-                                <div className="text-sm font-bold text-gray-900 truncate dark:text-white">
+                                <div className="text-sm font-bold text-gray-900 truncate dark:text-white break-all whitespace-normal">
                                 {result.artist} - {result.song}
                                 </div>
-                                <div className="text-sm  text-gray-900 truncate dark:text-white">
+                                <div className="text-sm  text-gray-900 truncate dark:text-white break-all whitespace-normal">
                                 Album {result.album}
                                 </div>
                                 <div className="text-sm font-light text-gray-500 truncate dark:text-gray-400 break-all whitespace-normal">
