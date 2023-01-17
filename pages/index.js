@@ -36,33 +36,45 @@ export default function Home() {
       .then((songsInfo) => {
         // console.log("Recovering", songsInfo)
 
-        song = {
-          "id" : songsInfo.song[0].id, 
-          "idVideo" : extractVideoIdFromUrl(songsInfo.song[0].url),
-          "name": songsInfo.song[0].name,
-          "genres": songsInfo.song[0].genre,
-          "artist" : songsInfo.song[0].artist,
-          "song" : songsInfo.song[0].song,
-          "album": songsInfo.song[0].album_name
-        };
-  
-        const results = songsInfo.top.map( el => { 
-            return {
-              "id" : el.id, 
-              "idVideo" : extractVideoIdFromUrl(el.url),
-              "name": el.name,
-              "genres": el.genre,
-              "artist" : el.artist,
-              "song" : el.song,
-              "album": el.album_name
-            }
-          })
-   
-         
-          setMetrics(songsInfo.metrics)
-          setResults([song,...results])
+        if(songsInfo.error != undefined){
+          setMetrics({})
+          setResults([])
           setLoading(false)
-          setquerySuccesful(true)
+          setquerySuccesful(false)
+
+        }else{
+
+          song = {
+            "id" : songsInfo.song[0].id, 
+            "idVideo" : extractVideoIdFromUrl(songsInfo.song[0].url),
+            "name": songsInfo.song[0].name,
+            "genres": songsInfo.song[0].genre,
+            "artist" : songsInfo.song[0].artist,
+            "song" : songsInfo.song[0].song,
+            "album": songsInfo.song[0].album_name
+          };
+    
+          const results = songsInfo.top.map( el => { 
+              return {
+                "id" : el.id, 
+                "idVideo" : extractVideoIdFromUrl(el.url),
+                "name": el.name,
+                "genres": el.genre,
+                "artist" : el.artist,
+                "song" : el.song,
+                "album": el.album_name
+              }
+            })
+     
+           
+            setMetrics(songsInfo.metrics)
+            setResults([song,...results])
+            setLoading(false)
+            setquerySuccesful(true)
+
+        }
+
+        
         
       });
   }
@@ -105,7 +117,12 @@ export default function Home() {
       }else{
         setLoading(true);
         setSongToPlay({ "song" : "", "name" : "", "id" : ""})
-        sendQuery(selectedItem.text);
+        if(selectedItem != undefined){
+          sendQuery(selectedItem.text);
+        }else{
+          sendQuery(queryValue);
+        }
+        
       }
   }
 
