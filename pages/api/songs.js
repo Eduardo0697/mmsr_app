@@ -10,7 +10,7 @@ const data = fileContent.split('\n').map( (row, index) => {
         // id: info[0], // If included data is 2.4 MB, if not 1.1 MB only, let the API find the id
         // artist: info[1],
         // song: info[2],
-        mixed: info[1] + '-' + info[2]
+        mixed: info[1] + '/' + info[2]
     }
 })
 

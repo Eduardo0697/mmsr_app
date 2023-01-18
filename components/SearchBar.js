@@ -27,7 +27,7 @@ export default function SearchBar({handleSearchonClick, handleQueryOnChange, han
         .then((response) => response.json())
         .then((data) => {
             const listbox = {
-                displayField: 'sonmixedg',
+                displayField: 'mixed',
                 searchType: 'contains',
                 data: data
             }

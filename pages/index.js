@@ -26,9 +26,9 @@ export default function Home() {
   }
   const sendQuery = (query) => {
     // console.log("Fetch API", query.split("-"))
-    const queryArray =  query.split("-")
-    let artist = encodeURI(queryArray[0])
-    let song = encodeURI(queryArray[1])
+    const queryArray =  query.split("/")
+    let artist = encodeURIComponent(queryArray[0])
+    let song = encodeURIComponent(queryArray[1])
     // console.log(artist, song)
 
     fetch(`https://api-mmsr.herokuapp.com/query/?artist=${artist}&track=${song}&top=10&model=model`)
