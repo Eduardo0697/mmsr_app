@@ -17,7 +17,7 @@ const styles = {
 
 const maxItems = 10
 
-export default function SearchBar({handleSearchonClick, handleQueryOnChange, handleQueryOnEnter, trigger}){
+export default function SearchBar({handleSearchonClick, handleQueryOnChange, handleQueryOnEnter, handleQueryOnSelect, trigger}){
 
     const [songs, setSongs] = useState({});
     const turnstoneRef = useRef()
@@ -57,6 +57,7 @@ export default function SearchBar({handleSearchonClick, handleQueryOnChange, han
                     clearButton={true}
                     onChange={handleQueryOnChange}
                     onEnter={handleQueryOnEnter}
+                    onSelect={handleQueryOnSelect}
                     typeahead={true}
                     maxItems={maxItems}
                 />

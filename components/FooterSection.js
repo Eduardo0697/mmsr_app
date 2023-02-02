@@ -7,7 +7,7 @@ export default function FooterContainer(){
         <footer className="p-4 bg-slate-50 rounded-lg shadow md:px-6 md:py-8 dark:bg-gray-900 bottom-0">
             <div className="sm:flex sm:items-center sm:justify-between">
                 <Link href="/" className="flex items-center mb-4 sm:mb-0">
-                    <Image src="/JKU_logo-2.png" alt="JKU" className="h-100 mr-3" width={90} height={200}  />
+                    <Image src="/jku.png" alt="JKU" className="h-100 mr-3" width={90} height={200}  />
                     <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">MMSR Project</span>
                 </Link>
                 <ul className="flex flex-wrap items-center mb-6 text-sm text-gray-500 sm:mb-0 dark:text-gray-400">

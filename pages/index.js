@@ -31,7 +31,7 @@ export default function Home() {
     let song = encodeURIComponent(queryArray[1])
     // console.log(artist, song)
 
-    fetch(`https://api-mmsr.herokuapp.com/query/?artist=${artist}&track=${song}&top=10&model=model`)
+    fetch(`https://api-mmsr.herokuapp.com/query/?artist=${artist}&track=${song}&top=20&model=model`)
       .then((response) => response.json())
       .then((songsInfo) => {
         // console.log("Recovering", songsInfo)
@@ -126,6 +126,10 @@ export default function Home() {
       }
   }
 
+  const handleQueryOnSelect = (selectedItem, displayField) => {
+    console.log(selectedItem, displayField)
+  }
+
   return (
     <>
       <Head>
@@ -137,19 +141,42 @@ export default function Home() {
      
       <main className="flex flex-col justify-between items-center px-5 py-32 md:p-28 min-h-screen">
         <NavBar handleHomeOnClick={handleHomeOnClick}>
+        { querySuccesful  && 
             <SearchBar
               trigger={clearSearchbox}
               handleSearchonClick={handleSearchonClick} 
               handleQueryOnChange={handleQueryOnChange} 
-              handleQueryOnEnter={handleQueryOnEnter}>
+              handleQueryOnEnter={handleQueryOnEnter}
+              handleQueryOnSelect={handleQueryOnSelect}>
                 
             </SearchBar>
+        }
         </NavBar>
     
         <div className="container mx-auto content">
 
         { loading && <PlaceholderList />}
-        { !querySuccesful && !loading  && <NoResults initial={stateZero} />}
+        { !querySuccesful && !loading  && 
+        
+        
+          <div className='flex flex-col'>
+            <NoResults initial={stateZero} /> 
+            <div className='self-center w-2/3'>
+              <SearchBar
+                trigger={clearSearchbox}
+                handleSearchonClick={handleSearchonClick} 
+                handleQueryOnChange={handleQueryOnChange} 
+                handleQueryOnEnter={handleQueryOnEnter}
+                handleQueryOnSelect={handleQueryOnSelect}>
+                  
+              </SearchBar>
+            </div>
+            
+          </div> 
+          
+      
+          
+        }
         { querySuccesful && !loading &&
           <div className="flex flex-row flex-wrap">
               { songToPlay.song !== "" && 
