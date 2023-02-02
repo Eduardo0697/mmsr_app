@@ -161,7 +161,7 @@ export default function Home() {
         
           <div className='flex flex-col'>
             <NoResults initial={stateZero} /> 
-            <div className='self-center w-2/3'>
+            <div className='self-center w-full md:w-2/3'>
               <SearchBar
                 trigger={clearSearchbox}
                 handleSearchonClick={handleSearchonClick} 
